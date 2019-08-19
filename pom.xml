@@ -1,0 +1,140 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.jhuster.imagecropper</groupId>
+  <artifactId>ImageCropper</artifactId>
+  <version>0.0.1</version>
+  <packaging>jar</packaging>
+
+  <name>Android ImageCropper</name>
+  <url>https://github.com/Naitsirc/ImageCropper</url>
+    
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    
+    <properties>
+    <scm.branch>master</scm.branch>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <!--  upgrade to 3.4 fails build, see https://github.com/simpligility/android-maven-plugin/issues/554 -->
+    <maven-plugin-plugin.version>3.3</maven-plugin-plugin.version>
+    <maven.api.version>3.0.4</maven.api.version>
+    <takari.test.version>2.9.1</takari.test.version>
+    <easymock.version>3.4</easymock.version>
+    <powermock.version>1.6.6</powermock.version>
+    <publisher.version>v2-rev13-1.19.0</publisher.version>
+    <asm.version>5.0.4</asm.version>
+    <!-- Attention - make sure that the tools version is the versions of 
+      the transitive dependencies of the builder version -->
+    <android.builder.version>2.3.0</android.builder.version>
+    <android.tools.version>25.3.0</android.tools.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+      
+      
+      <dependency>
+        <groupId>com.android.tools</groupId>
+        <artifactId>common</artifactId>
+        <version>${android.tools.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.android.tools</groupId>
+        <artifactId>dvlib</artifactId>
+        <version>${android.tools.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.android.tools</groupId>
+        <artifactId>sdk-common</artifactId>
+        <version>${android.tools.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.android.tools</groupId>
+        <artifactId>sdklib</artifactId>
+        <version>${android.tools.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.android.tools.build</groupId>
+        <artifactId>builder</artifactId>
+        <version>${android.builder.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.android.tools.build</groupId>
+        <artifactId>manifest-merger</artifactId>
+        <version>${android.tools.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.android.tools.ddms</groupId>
+        <artifactId>ddmlib</artifactId>
+        <version>${android.tools.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.android.tools.layoutlib</groupId>
+        <artifactId>layoutlib-api</artifactId>
+        <version>${android.tools.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.android.tools.lint</groupId>
+        <artifactId>lint</artifactId>
+        <version>${android.tools.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.android.tools.lint</groupId>
+        <artifactId>lint-api</artifactId>
+        <version>${android.tools.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.android.tools.lint</groupId>
+        <artifactId>lint-checks</artifactId>
+        <version>${android.tools.version}</version>
+      </dependency>
+
+      <dependency>
+    <groupId>com.google.android</groupId>
+    <artifactId>android</artifactId>
+    <version>4.0.1.2</version>
+    <scope>provided</scope>
+</dependency>
+      
+  </dependencies>
+  
+  <build>
+    <plugins>
+    
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.2</version>
+        <configuration> <!-- Compile java 7 compatible bytecode -->
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+      
+      
+    </plugins>
+  </build>
+
+</project>

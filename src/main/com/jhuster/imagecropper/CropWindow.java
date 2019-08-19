@@ -17,8 +17,8 @@ package com.jhuster.imagecropper;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.Log;
 
-import com.jhuster.imagecropper.CropImageActivity.CropParam;
 
 public class CropWindow {
 
@@ -29,45 +29,27 @@ public class CropWindow {
     private static final int TOUCH_GROW_BOTTOM_EDGE = (1 << 4);
     private static final int TOUCH_MOVE_WINDOW = (1 << 5);
 
-    private static final float BORDER_THRESHOLD = 30f;
-    private static final float DEFAULT_MIN_WDITH = 30f;
-    private static final float DEFAULT_MIN_HEIGHT = 30f;
+    private static final float BORDER_THRESHOLD = 80f;
+    private static final float DEFAULT_MIN_WDITH = 180f;
+    private static final float DEFAULT_MIN_HEIGHT = 180f;
 
     private float mLeft;
     private float mTop;
     private float mWidth;
     private float mHeight;
     private RectF mImageRect;
-    private CropParam mCropParam;
     private int mTouchMode = TOUCH_NONE;
 
-    public CropWindow(RectF imageRect, CropParam params) {
+    public CropWindow(RectF imageRect) {
+
 
         mWidth = Math.min(imageRect.width(), imageRect.height()) * 4 / 5;
         mHeight = mWidth;
 
-        if (params.mOutputX != 0 && params.mOutputY != 0) {
-            mWidth = params.mOutputX;
-            mHeight = params.mOutputY;
-        } else {
-            if (params.mMaxOutputX != 0 && params.mMaxOutputY != 0) {
-                mWidth = params.mMaxOutputX;
-                mHeight = params.mMaxOutputY;
-            }
-            if (params.mAspectX != 0 && params.mAspectY != 0) {
-                if (params.mAspectX > params.mAspectY) {
-                    mHeight = mWidth * params.mAspectY / params.mAspectX;
-                } else {
-                    mWidth = mHeight * params.mAspectX / params.mAspectY;
-                }
-            }
-        }
-
         mLeft = imageRect.left + (imageRect.width() - mWidth) / 2;
         mTop = imageRect.top + (imageRect.height() - mHeight) / 2;
-        ;
+
         mImageRect = imageRect;
-        mCropParam = params;
     }
 
     public float left() {
@@ -133,14 +115,7 @@ public class CropWindow {
     //By default, the border equals the image border
     private RectF getGrowBorder() {
         RectF border = new RectF(mImageRect);
-        if (mCropParam.mMaxOutputX != 0) {
-            border.left = Math.max(right() - mCropParam.mMaxOutputX, mImageRect.left);
-            border.right = Math.min(left() + mCropParam.mMaxOutputX, mImageRect.right);
-        }
-        if (mCropParam.mMaxOutputY != 0) {
-            border.top = Math.max(bottom() - mCropParam.mMaxOutputY, mImageRect.top);
-            border.bottom = Math.min(top() + mCropParam.mMaxOutputY, mImageRect.bottom);
-        }
+
         return border;
     }
 
@@ -157,26 +132,27 @@ public class CropWindow {
         RectF window = getWindowRectF();
 
         //IF set output X&Y, forbid change the crop window size
-        if (mCropParam.mOutputX == 0 && mCropParam.mOutputY == 0) {
+
 
             //make sure the position is between the top and the bottom edge (with some tolerance). Similar for isYinWindow.
-            boolean isXinWindow = (x >= window.left - BORDER_THRESHOLD) && (x < window.right + BORDER_THRESHOLD);
-            boolean isYinWindow = (y >= window.top - BORDER_THRESHOLD) && (y < window.bottom + BORDER_THRESHOLD);
+            boolean isXinWindow = (x >= window.left - (BORDER_THRESHOLD/2)) && (x < window.right + (BORDER_THRESHOLD/2));
+            boolean isYinWindow = (y >= window.top - (BORDER_THRESHOLD/2)) && (y < window.bottom + (BORDER_THRESHOLD/2));
+
 
             // Check whether the position is near some edge(s)
             if ((Math.abs(window.left - x) < BORDER_THRESHOLD) && isYinWindow) {
                 mTouchMode |= TOUCH_GROW_LEFT_EDGE;
-            }
+            }else{
             if ((Math.abs(window.right - x) < BORDER_THRESHOLD) && isYinWindow) {
                 mTouchMode |= TOUCH_GROW_RIGHT_EDGE;
-            }
+            }else{
             if ((Math.abs(window.top - y) < BORDER_THRESHOLD) && isXinWindow) {
                 mTouchMode |= TOUCH_GROW_TOP_EDGE;
-            }
+            }else{
             if ((Math.abs(window.bottom - y) < BORDER_THRESHOLD) && isXinWindow) {
                 mTouchMode |= TOUCH_GROW_BOTTOM_EDGE;
-            }
-        }
+            }}}}
+
 
         // Not near any edge but inside the rectangle: move
         if (mTouchMode == TOUCH_NONE && window.contains((int) x, (int) y)) {
@@ -203,27 +179,6 @@ public class CropWindow {
             adjustWindowRect();
         } else {
 
-            //IF set output X&Y, forbid change the crop window size
-            if (mCropParam.mOutputX != 0 && mCropParam.mOutputY != 0) {
-                return false;
-            }
-
-            //IF set x:y aspect, only support drag from right&bottom
-            if (mCropParam.mAspectX != 0 && mCropParam.mAspectY != 0) {
-                if ((TOUCH_GROW_RIGHT_EDGE & mTouchMode) == 0 || (TOUCH_GROW_BOTTOM_EDGE & mTouchMode) == 0) {
-                    return false;
-                }
-                float min_scale = Math.max(DEFAULT_MIN_WDITH / mWidth, DEFAULT_MIN_HEIGHT / mHeight);
-                RectF border = getGrowBorder();
-                float max_right_scale = (border.right - left()) / width();
-                float max_bottom_scale = (border.bottom - top()) / height();
-                float right_scale = (width() + deltaX) / width();
-                float bottom_scale = (height() + deltaY) / height();
-                float scale = Math.min(Math.min(right_scale, max_right_scale), Math.min(bottom_scale, max_bottom_scale));
-                mWidth = mWidth * Math.max(scale, min_scale);
-                mHeight = mHeight * Math.max(scale, min_scale);
-                return true;
-            }
 
             RectF window = getWindowRectF();
             RectF border = getGrowBorder();
