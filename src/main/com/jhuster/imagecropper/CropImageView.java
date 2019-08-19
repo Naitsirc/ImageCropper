@@ -14,6 +14,7 @@
  */
 package com.jhuster.imagecropper;
 
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -27,14 +28,14 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 
 
 public class CropImageView extends View{
 
-    private static final float CROP_WINDOW_PAINTER_WIDTH = 3.0f;
-    private static final float OUTSIDE_WINDOW_PAINTER_WIDTH = 1.0f;
+    private static final float OUTSIDE_WINDOW_PAINTER_WIDTH = 9.0f;
     private static final float DRAG_ICONS_RADIUS = 20.0f;
 
     private Paint mCropPainter;
@@ -50,6 +51,8 @@ public class CropImageView extends View{
     private float mScaleRate = (float) 1.0;
 
     private Drawable[] selectionDrawables;
+
+    private Context context;
 
     public void setSelectionDrawables(Drawable[] dra){
         this.selectionDrawables = dra;
@@ -67,11 +70,13 @@ public class CropImageView extends View{
 
     public CropImageView(Context context) {
         super(context);
+        this.context = context;
         createPainter();
     }
 
     public CropImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.context = context;
         createPainter();
     }
 
@@ -90,8 +95,10 @@ public class CropImageView extends View{
         mCropPainter = new Paint();
         mCropPainter.setAntiAlias(true);
         mCropPainter.setStyle(Style.STROKE);
-        mCropPainter.setStrokeWidth(CROP_WINDOW_PAINTER_WIDTH);
-        mCropPainter.setColor(Color.YELLOW);
+        mCropPainter.setStrokeWidth(dpToPx(3,context));
+        mCropPainter.setColor(Color.parseColor("#ff5555"));
+        //mCropPainter.setPathEffect(new DashPathEffect(new float[]{10,40}, 0));
+
 
         mOutsidePainter = new Paint();
         mOutsidePainter.setAntiAlias(true);
@@ -101,13 +108,16 @@ public class CropImageView extends View{
     }
 
     public void initialize(Bitmap bitmap) {
-        mOriginBitmap = bitmap;
         initialize(bitmap, 0);
     }
 
     public void initialize(Bitmap bitmap, int degrees) {
         mOriginBitmap = bitmap;
         replace(bitmap, degrees);
+    }
+
+    public static int dpToPx(float dp, Context context) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
     }
 
     public Bitmap getCropBitmap() {

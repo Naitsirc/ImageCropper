@@ -28,7 +28,7 @@ allprojects {
 (2) Add the dependency
 ```groovy
 allprojects {
-    compile 'com.github.Naitsirc:ImageCropper:v1.1.1'
+    implementation 'com.github.Naitsirc:ImageCropper:-SNAPSHOT'
 }
 ```
 

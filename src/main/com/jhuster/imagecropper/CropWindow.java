@@ -139,6 +139,14 @@ public class CropWindow {
             boolean isYinWindow = (y >= window.top - (BORDER_THRESHOLD/2)) && (y < window.bottom + (BORDER_THRESHOLD/2));
 
 
+            Log.v("X/Y",isXinWindow+" / "+isYinWindow);
+
+            Log.v("IZQUIERDA",""+(Math.abs(window.left - x) < BORDER_THRESHOLD));
+        Log.v("DERECHA",(Math.abs(window.right - x) < BORDER_THRESHOLD)+"");
+        Log.v("ARRIBA",(Math.abs(window.top - y) < BORDER_THRESHOLD)+"");
+        Log.v("ABAJO",(Math.abs(window.bottom - y) < BORDER_THRESHOLD)+"");
+
+
             // Check whether the position is near some edge(s)
             if ((Math.abs(window.left - x) < BORDER_THRESHOLD) && isYinWindow) {
                 mTouchMode |= TOUCH_GROW_LEFT_EDGE;
@@ -214,9 +222,4 @@ public class CropWindow {
         return true;
     }
 }
-
-
-
-
-
 
