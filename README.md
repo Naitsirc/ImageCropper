@@ -36,7 +36,7 @@ Usage
 =========
 Use the CropImageView class
 ```java
-com.jhuster.imagecropper.CropImageView
+import com.naitsirc.imagecropper.CropImageView;
 ```
 
 Call these methods to interact with CropImageView
