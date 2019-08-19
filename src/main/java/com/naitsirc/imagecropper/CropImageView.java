@@ -181,7 +181,11 @@ public class CropImageView extends View{
 
     private void replace(Bitmap bitmap, int degrees) {
         if (mCropBitmap != null && mCropBitmap.getBitmap() != mOriginBitmap) {
-            mCropBitmap.recycle();
+            try{
+                mCropBitmap.recycle();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
         mCropBitmap = new RotateBitmap(bitmap, degrees);
         mIsCropParamChanged = true;
