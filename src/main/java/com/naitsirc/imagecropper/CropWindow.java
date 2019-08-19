@@ -12,7 +12,7 @@
  *  @author  Jhuster
  *  @date    2015/01/09    
  */
-package com.jhuster.imagecropper;
+package com.naitsirc.imagecropper;
 
 import android.graphics.Point;
 import android.graphics.Rect;

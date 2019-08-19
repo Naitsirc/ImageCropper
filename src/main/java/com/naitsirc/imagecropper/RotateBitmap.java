@@ -1,4 +1,4 @@
-package com.jhuster.imagecropper;
+package com.naitsirc.imagecropper;
 
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
