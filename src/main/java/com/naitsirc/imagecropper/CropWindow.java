@@ -113,7 +113,7 @@ public class CropWindow {
     }
 
     //By default, the border equals the image border
-    private RectF getGrowBorder() {
+    public RectF getGrowBorder() {
         RectF border = new RectF(mImageRect);
 
         return border;
